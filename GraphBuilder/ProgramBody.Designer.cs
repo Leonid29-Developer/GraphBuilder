@@ -213,6 +213,7 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "ProgramBody";
             this.Text = "Графопостроитель";
+            this.Load += new System.EventHandler(this.ProgramBody_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Main)).EndInit();
             this.ResumeLayout(false);
 

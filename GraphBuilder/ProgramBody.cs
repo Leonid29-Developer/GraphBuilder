@@ -17,16 +17,21 @@ namespace GraphBuilder
 
         private int ToolsNumber = 1; private List<Vertexes> List_Vertexes = new List<Vertexes>();
 
+        private void ProgramBody_Load(object sender, EventArgs e)
+        {
+            Bitmap BM_Map = new Bitmap(Main.Width, Main.Height); Main.Image = BM_Map;
+        }
+
         private void SelectTools_Click(object sender, EventArgs e)
         { Panel Element = (Panel)sender; ToolsNumber = Convert.ToInt32(Element.Name[Element.Name.Length - 1]) -48; }
 
-        private void Main_MouseClick(object sender, EventArgs e)
+        private void Main_MouseClick(object sender, MouseEventArgs e)
         {
             switch (ToolsNumber)
             {
                 case 2:
                     {
-
+                        List_Vertexes.Add(new Vertexes((List_Vertexes.Count+1).ToString(), e.X, e.Y, 60, 60)); Draw.Vertex(Main, List_Vertexes[List_Vertexes.Count - 1]);
                     }
                     break;
                 case 3:
