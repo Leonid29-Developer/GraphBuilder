@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgramBody));
             this.Tool1 = new System.Windows.Forms.Panel();
             this.Tool2 = new System.Windows.Forms.Panel();
             this.Tool4 = new System.Windows.Forms.Panel();
@@ -42,12 +43,15 @@
             this.Load_Button = new System.Windows.Forms.Panel();
             this.Save_Button = new System.Windows.Forms.Panel();
             this.Tool6 = new System.Windows.Forms.Panel();
+            this.Tool7 = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.Main)).BeginInit();
             this.SuspendLayout();
             // 
             // Tool1
             // 
-            this.Tool1.BackColor = System.Drawing.SystemColors.Control;
+            this.Tool1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.Tool1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Tool1.BackgroundImage")));
+            this.Tool1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Tool1.Location = new System.Drawing.Point(14, 14);
             this.Tool1.Margin = new System.Windows.Forms.Padding(5);
             this.Tool1.Name = "Tool1";
@@ -58,6 +62,8 @@
             // Tool2
             // 
             this.Tool2.BackColor = System.Drawing.SystemColors.Control;
+            this.Tool2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Tool2.BackgroundImage")));
+            this.Tool2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Tool2.Location = new System.Drawing.Point(14, 84);
             this.Tool2.Margin = new System.Windows.Forms.Padding(5);
             this.Tool2.Name = "Tool2";
@@ -68,6 +74,8 @@
             // Tool4
             // 
             this.Tool4.BackColor = System.Drawing.SystemColors.Control;
+            this.Tool4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Tool4.BackgroundImage")));
+            this.Tool4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Tool4.Location = new System.Drawing.Point(14, 224);
             this.Tool4.Margin = new System.Windows.Forms.Padding(5);
             this.Tool4.Name = "Tool4";
@@ -78,6 +86,8 @@
             // Tool5
             // 
             this.Tool5.BackColor = System.Drawing.SystemColors.Control;
+            this.Tool5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Tool5.BackgroundImage")));
+            this.Tool5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Tool5.Location = new System.Drawing.Point(14, 294);
             this.Tool5.Margin = new System.Windows.Forms.Padding(5);
             this.Tool5.Name = "Tool5";
@@ -88,6 +98,8 @@
             // Tool3
             // 
             this.Tool3.BackColor = System.Drawing.SystemColors.Control;
+            this.Tool3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Tool3.BackgroundImage")));
+            this.Tool3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Tool3.Location = new System.Drawing.Point(14, 154);
             this.Tool3.Margin = new System.Windows.Forms.Padding(5);
             this.Tool3.Name = "Tool3";
@@ -101,7 +113,7 @@
             this.Main.Location = new System.Drawing.Point(99, 14);
             this.Main.Margin = new System.Windows.Forms.Padding(20, 3, 3, 3);
             this.Main.Name = "Main";
-            this.Main.Size = new System.Drawing.Size(937, 593);
+            this.Main.Size = new System.Drawing.Size(937, 663);
             this.Main.TabIndex = 3;
             this.Main.TabStop = false;
             this.Main.MouseClick += new System.Windows.Forms.MouseEventHandler(this.Main_MouseClick);
@@ -136,13 +148,13 @@
             this.OutputWindow.ItemHeight = 21;
             this.OutputWindow.Location = new System.Drawing.Point(1064, 154);
             this.OutputWindow.Name = "OutputWindow";
-            this.OutputWindow.Size = new System.Drawing.Size(352, 382);
+            this.OutputWindow.Size = new System.Drawing.Size(352, 445);
             this.OutputWindow.TabIndex = 6;
             // 
             // Path
             // 
             this.Path.BackColor = System.Drawing.SystemColors.Control;
-            this.Path.Location = new System.Drawing.Point(1064, 547);
+            this.Path.Location = new System.Drawing.Point(1064, 617);
             this.Path.Margin = new System.Windows.Forms.Padding(5);
             this.Path.Name = "Path";
             this.Path.Size = new System.Drawing.Size(164, 60);
@@ -152,7 +164,7 @@
             // Cycle
             // 
             this.Cycle.BackColor = System.Drawing.SystemColors.Control;
-            this.Cycle.Location = new System.Drawing.Point(1252, 547);
+            this.Cycle.Location = new System.Drawing.Point(1252, 617);
             this.Cycle.Margin = new System.Windows.Forms.Padding(5);
             this.Cycle.Name = "Cycle";
             this.Cycle.Size = new System.Drawing.Size(164, 60);
@@ -162,7 +174,9 @@
             // Load_Button
             // 
             this.Load_Button.BackColor = System.Drawing.SystemColors.Control;
-            this.Load_Button.Location = new System.Drawing.Point(14, 547);
+            this.Load_Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Load_Button.BackgroundImage")));
+            this.Load_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Load_Button.Location = new System.Drawing.Point(14, 617);
             this.Load_Button.Margin = new System.Windows.Forms.Padding(5);
             this.Load_Button.Name = "Load_Button";
             this.Load_Button.Size = new System.Drawing.Size(60, 60);
@@ -172,7 +186,9 @@
             // Save_Button
             // 
             this.Save_Button.BackColor = System.Drawing.SystemColors.Control;
-            this.Save_Button.Location = new System.Drawing.Point(14, 477);
+            this.Save_Button.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Save_Button.BackgroundImage")));
+            this.Save_Button.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Save_Button.Location = new System.Drawing.Point(14, 547);
             this.Save_Button.Margin = new System.Windows.Forms.Padding(5);
             this.Save_Button.Name = "Save_Button";
             this.Save_Button.Size = new System.Drawing.Size(60, 60);
@@ -182,6 +198,8 @@
             // Tool6
             // 
             this.Tool6.BackColor = System.Drawing.SystemColors.Control;
+            this.Tool6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Tool6.BackgroundImage")));
+            this.Tool6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.Tool6.Location = new System.Drawing.Point(14, 364);
             this.Tool6.Margin = new System.Windows.Forms.Padding(5);
             this.Tool6.Name = "Tool6";
@@ -189,12 +207,25 @@
             this.Tool6.TabIndex = 2;
             this.Tool6.Click += new System.EventHandler(this.SelectTools_Click);
             // 
+            // Tool7
+            // 
+            this.Tool7.BackColor = System.Drawing.SystemColors.Control;
+            this.Tool7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Tool7.BackgroundImage")));
+            this.Tool7.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Tool7.Location = new System.Drawing.Point(14, 434);
+            this.Tool7.Margin = new System.Windows.Forms.Padding(5);
+            this.Tool7.Name = "Tool7";
+            this.Tool7.Size = new System.Drawing.Size(60, 60);
+            this.Tool7.TabIndex = 3;
+            this.Tool7.Click += new System.EventHandler(this.Tool7_Click);
+            // 
             // ProgramBody
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.ClientSize = new System.Drawing.Size(1430, 623);
+            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.ClientSize = new System.Drawing.Size(1430, 693);
+            this.Controls.Add(this.Tool7);
             this.Controls.Add(this.Tool6);
             this.Controls.Add(this.Save_Button);
             this.Controls.Add(this.Load_Button);
@@ -235,6 +266,7 @@
         private System.Windows.Forms.Panel Load_Button;
         private System.Windows.Forms.Panel Save_Button;
         private System.Windows.Forms.Panel Tool6;
+        private System.Windows.Forms.Panel Tool7;
     }
 }
 

@@ -8,38 +8,77 @@ using System.Windows.Forms;
 
 namespace GraphBuilder
 {
-    /// <summary> Инструменты и краски </summary>
-    public class Paints
-    {
-        public static Pen Pen(Color color) { Pen Pen_Color = new Pen(color); return Pen_Color; }
-        public static Brush Brush(Color color) { Brush Brush_Color = new SolidBrush(color); return Brush_Color; }
-    }
-
     public static class Draw
     {
         /// <summary> Метод. Создания изображения вершины с отрисовкой имени </summary>
-        public static void Vertex(PictureBox Main, Vertexes Vertex)
+        public static void Vertex(PictureBox Main, Vertexes Vertex, Color DrawColor)
         {
             Bitmap BM_Main = new Bitmap(Main.Image); Graphics Grap_Main = Graphics.FromImage(BM_Main);
-            
-            Bitmap BM_Vertex = new Bitmap(Vertex.Width, Vertex.Height); Graphics Grap_Vertex = Graphics.FromImage(BM_Vertex);
-
-            Grap_Vertex.DrawEllipse( new Pen(Color.Black,2), 0,0,Vertex.Width-3,Vertex.Height-3);
-            int Inaccuracy = -1; if (Vertex.Name.Length <2) Inaccuracy = 2;
-            Grap_Vertex.DrawString(Vertex.Name, new Font("Times New Roman", 12), Paints.Brush(Color.Black), Vertex.Width/3+ Inaccuracy, Vertex.Height/ 3);
-
-            RF_BM(Grap_Main, BM_Vertex,"None",Vertex.X,Vertex.Y); Main.Image = BM_Main;
+            Grap_Main.FillEllipse(new SolidBrush(Main.BackColor), Vertex.X + 1, Vertex.Y + 1, Vertex.Width - 2, Vertex.Height - 2);
+            Grap_Main.DrawEllipse(new Pen(DrawColor, 3), Vertex.X + 1, Vertex.Y + 1, Vertex.Width - 2, Vertex.Height - 2);
+            int Inaccuracy = 3 - (Convert.ToInt32(Vertex.Name.Length) - 1) * (2 + Convert.ToInt32(Vertex.Name.Length) - 1);
+            Grap_Main.DrawString(Vertex.Name, new Font("Times New Roman", 12), new SolidBrush(Color.Black), Vertex.X + Vertex.Width / 3 + Inaccuracy, Vertex.Y + Vertex.Height / 3);
+            Main.Image = BM_Main;
         }
 
-        /// <summary> Метод. Отзеркаливание или переворот изображения и наложение его на интерфейс </summary>
-        private static void RF_BM(Graphics Source, Bitmap Appended, string Flip, float PositionX, float PositionY)
+        /// <summary> Метод. Создания изображения ребра с размерностью между заданными вершинами </summary>
+        public static void Edge(PictureBox Main, Edges Edge)
         {
-            switch (Flip)
-            {
-                case "None": for (int I1 = 0; I1 < Appended.Height; I1++) for (int I2 = 0; I2 < Appended.Width; I2++) { Brush Brush_Color = new SolidBrush(Appended.GetPixel(I2, I1)); Source.FillRectangle(Brush_Color, PositionX + I2, PositionY + I1, 1, 1); } break;
+            Bitmap BM_Start = new Bitmap(Main.Image); Graphics Grap_Start = Graphics.FromImage(BM_Start);
 
-                case "FlipX": for (int I1 = 0; I1 < Appended.Height; I1++) for (int I2 = Appended.Width - 1; I2 >= 0; I2--) { Brush Brush_Color = new SolidBrush(Appended.GetPixel(I2, I1)); Source.FillRectangle(Brush_Color, PositionX + (Appended.Width - 1 - I2), PositionY + I1, 1, 1); } break;
+            Grap_Start.DrawLine(new Pen(Color.Black, 2), new Point(Edge.A.X + Edge.A.Width / 2, Edge.A.Y + Edge.A.Height / 2), new Point(Edge.B.X + Edge.B.Width / 2, Edge.B.Y + Edge.B.Height / 2));
+
+            Main.Image = BM_Start; Vertex(Main, Edge.A, Color.Black); Vertex(Main, Edge.B, Color.Black); Bitmap BM_Main = new Bitmap(Main.Image); Graphics Grap_Main = Graphics.FromImage(BM_Main);
+
+            int DX = 0, DY = 0, DistanceX =0, DistanceY = 0;
+
+            if (Edge.A.X <= Edge.B.X)
+            {
+                if (Edge.A.Y >= Edge.B.Y)
+                {
+                    DX = (int)((float)(Edge.A.X + Edge.A.Width / 2 + Edge.B.X + Edge.B.Width / 2) / 2.0); DY = (int)((float)(Edge.A.Y + Edge.A.Height / 2 + Edge.B.Y + Edge.B.Height / 2) / 2.0);
+                    DistanceX = 6; DistanceY = 3; if (((float)(Edge.B.X - Edge.A.X) / 2.0) < 84 & (float)((Edge.A.Y - Edge.B.Y) / 2.0) < 30) DistanceX -= (int)(84 - (float)(Edge.B.X - Edge.A.X) / 2.0);
+
+                    //MessageBox.Show("X " + ((float)(Edge.B.X - Edge.A.X) / 2.0).ToString());
+                    //MessageBox.Show("Y " +/*$"{Edge.B.Y}\n{Edge.A.Y}\n"+*/((float)(Edge.A.Y - Edge.B.Y) / 2.0).ToString());
+
+                    ////Grap_Main.FillRectangle(new SolidBrush(Color.Red), DX-1, DY-1, 3, 3);
+                    //Grap_Main.FillEllipse(new SolidBrush(Main.BackColor), DX + DistanceX, DY + DistanceY, 46, 18);
+                    //Grap_Main.DrawString("00000", new Font("Times New Roman", 12), new SolidBrush(Color.Black), DX + DistanceX, DY + DistanceY);
+                    //Grap_Main.DrawLine(new Pen(Color.Black, 1), new Point(DX, DY), new Point(DX + DistanceX, DY + DistanceY + 9));
+                    //Grap_Main.DrawRectangle(new Pen(Color.Black, 1), DX + DistanceX, DY + DistanceY, 46, 18);
+                }
+                else if (Edge.A.Y < Edge.B.Y)
+                {
+                    DX = (int)((float)(Edge.A.X + Edge.A.Width / 2 + Edge.B.X + Edge.B.Width / 2) / 2.0); DY = (int)((float)(Edge.A.Y + Edge.A.Height / 2 + Edge.B.Y + Edge.B.Height / 2) / 2.0);
+                    DistanceX = 6; DistanceY = -21; if (((float)(Edge.B.X - Edge.A.X) / 2.0) < 84 & (float)((Edge.B.Y - Edge.A.Y) / 2.0) < 30) DistanceX -= (int)(84 - (float)(Edge.B.X - Edge.A.X) / 2.0);
+                }
             }
+            else if (Edge.A.X > Edge.B.X)
+            {
+                if (Edge.A.Y <= Edge.B.Y)
+                {
+                    DX = (int)((float)(Edge.A.X + Edge.A.Width / 2 + Edge.B.X + Edge.B.Width / 2) / 2.0); DY = (int)((float)(Edge.A.Y + Edge.A.Height / 2 + Edge.B.Y + Edge.B.Height / 2) / 2.0);
+                    DistanceX = 6; DistanceY = 3; if (((float)(Edge.A.X - Edge.B.X) / 2.0) < 84 & (float)((Edge.B.Y - Edge.A.Y) / 2.0) < 30) DistanceX -= (int)(84 - (float)(Edge.A.X - Edge.B.X) / 2.0);
+                }
+                else if (Edge.A.Y > Edge.B.Y)
+                {
+                    DX = (int)((float)(Edge.A.X + Edge.A.Width / 2 + Edge.B.X + Edge.B.Width / 2) / 2.0); DY = (int)((float)(Edge.A.Y + Edge.A.Height / 2 + Edge.B.Y + Edge.B.Height / 2) / 2.0);
+                    DistanceX = 6; DistanceY = -21; if (((float)(Edge.A.X - Edge.B.X) / 2.0) < 84 & (float)((Edge.A.Y - Edge.B.Y) / 2.0) < 30) DistanceX -= (int)(84 - (float)(Edge.A.X - Edge.B.X) / 2.0);
+                }
+            }
+
+            //Grap_Main.FillRectangle(new SolidBrush(Color.Red), DX-1, DY-1, 3, 3);
+            Grap_Main.FillEllipse(new SolidBrush(Main.BackColor), DX + DistanceX, DY + DistanceY, 46, 18);
+            Grap_Main.DrawString($"{Edge.Size:00000}", new Font("Times New Roman", 12), new SolidBrush(Color.Black), DX + DistanceX, DY + DistanceY) ;
+            Grap_Main.DrawLine(new Pen(Color.Black, 1), new Point(DX, DY), new Point(DX + DistanceX, DY + DistanceY + 9));
+            Grap_Main.DrawRectangle(new Pen(Color.Black, 1), DX + DistanceX, DY + DistanceY, 46, 18);
+
+            Main.Image = BM_Main;
         }
+
+        /// <summary> Метод. Полная прорисовка всех вершин и ребер </summary>
+        public static void FullDrawing(PictureBox Main, List<Vertexes> List_Vertexes, List<Edges> List_Edges)
+        { Bitmap BM_Map = new Bitmap(Main.Width, Main.Height); Main.Image = BM_Map; foreach(Vertexes Vertex in List_Vertexes) Draw.Vertex(Main, Vertex, Color.Black); foreach(Edges Edge in List_Edges) Draw.Edge(Main, Edge); }
     }
 }
