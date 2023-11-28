@@ -15,11 +15,7 @@ namespace GraphBuilder
 
         private void ProgramBody_Load(object sender, EventArgs e)
         {
-            Save_Button.Location = Load_Button.Location; Load_Button.Visible = false;
-
-            List_Vertexes = new List<Vertexes>(); List_Edges = new List<Edges>();
-
-            Bitmap BM_Map = new Bitmap(Main.Width, Main.Height); Main.Image = BM_Map;
+            List_Vertexes = new List<Vertexes>(); List_Edges = new List<Edges>(); Bitmap BM_Main= new Bitmap(Main.Width, Main.Height); Graphics Grap_Main = Graphics.FromImage(BM_Main); Grap_Main.Clear(Color.White); Main.Image = BM_Main;
         }
 
         /// <summary> Метод. Обработка нажатия на Panel - Иконки инструментов </summary>
@@ -68,7 +64,7 @@ namespace GraphBuilder
                                 if (TemporaryUpdate == null) { TemporaryUpdate = Vertex; Draw.Vertex(Main, TemporaryUpdate, Color.Gold); }
                                 else if (Vertex == TemporaryUpdate) { Draw.Vertex(Main, TemporaryUpdate, Color.Black); TemporaryUpdate = null; DrawTemporary(); }
                                 else if (Vertex != TemporaryUpdate) foreach (Edges Edge in List_Edges) if ((Edge.A == TemporaryUpdate & Edge.B == Vertex) | (Edge.A == Vertex & Edge.B == TemporaryUpdate))
-                                        { EdgesResize.Sized = Edge.Size; new EdgesResize().ShowDialog(); Edge.ReSize(EdgesResize.Sized); Draw.Edge(Main, Edge); TemporaryUpdate = null; DrawTemporary(); }
+                                        { EdgesResize.Sized = Edge.Size; EdgesResize.Shift = Edge.Distortion; new EdgesResize().ShowDialog(); Edge.ReSize(EdgesResize.Sized); Edge.SetDistortion(EdgesResize.Shift); Draw.Edge(Main, Edge); TemporaryUpdate = null; DrawTemporary(); }
 
                             }
                     }
@@ -115,10 +111,48 @@ namespace GraphBuilder
         private void Tool7_Click(object sender, EventArgs e) => ProgramBody_Load(sender, e);
 
         /// <summary> Метод. Сохранение графа в формате Image </summary>
-        private void Save_Button_Paint(object sender, PaintEventArgs e) { }
+        private void Save_Button_Click(object sender, EventArgs e)
+        {
+            if (Main.Image != null)
+            {
+                SaveFileDialog savedialog = new SaveFileDialog();
+                savedialog.Title = "Сохранить картинку как..."; savedialog.OverwritePrompt = true; savedialog.CheckPathExists = true;
+                savedialog.Filter = "Image Files(*.BMP)|*.BMP|Image Files(*.JPG)|*.JPG|Image Files(*.GIF)|*.GIF|Image Files(*.PNG)|*.PNG|All files (*.*)|*.*";
+                savedialog.ShowHelp = true; if (savedialog.ShowDialog() == DialogResult.OK)
+                {
+                    try { Main.Image.Save(savedialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg); }
+                    catch { MessageBox.Show("Невозможно сохранить изображение", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                }
+            }
+        }
 
         /// <summary> Метод. Чтение графа из формата Image </summary> 
-        private void Load_Button_Paint(object sender, PaintEventArgs e) { } // Не реализовано
+        private void Load_Button_Click(object sender, EventArgs e) // Не реализовано
+        {
+            ProgramBody_Load(sender, e);
+
+            // Вершины
+            List_Vertexes.Add(new Vertexes("1", 450, 30, 60, 60));List_Vertexes.Add(new Vertexes("2", 600, 120, 60, 60));
+            List_Vertexes.Add(new Vertexes("3", 670, 240, 60, 60));List_Vertexes.Add(new Vertexes("4", 600, 380, 60, 60));
+            List_Vertexes.Add(new Vertexes("5", 450, 470, 60, 60));List_Vertexes.Add(new Vertexes("6", 300, 380, 60, 60));
+            List_Vertexes.Add(new Vertexes("7", 230, 240, 60, 60)); List_Vertexes.Add(new Vertexes("8", 300, 120, 60, 60));
+
+            // Ребра
+            List_Edges.Add(new Edges(List_Vertexes[0], List_Vertexes[1])); List_Edges[0].ReSize(6);
+            List_Edges.Add(new Edges(List_Vertexes[0], List_Vertexes[7])); List_Edges[1].ReSize(4);
+            List_Edges.Add(new Edges(List_Vertexes[1], List_Vertexes[2])); List_Edges[2].ReSize(1);
+            List_Edges.Add(new Edges(List_Vertexes[7], List_Vertexes[6])); List_Edges[3].ReSize(9);
+            List_Edges.Add(new Edges(List_Vertexes[6], List_Vertexes[5])); List_Edges[4].ReSize(2);
+            List_Edges.Add(new Edges(List_Vertexes[5], List_Vertexes[4])); List_Edges[5].ReSize(2);
+            List_Edges.Add(new Edges(List_Vertexes[4], List_Vertexes[3])); List_Edges[6].ReSize(1);
+            List_Edges.Add(new Edges(List_Vertexes[3], List_Vertexes[1])); List_Edges[7].ReSize(3);
+            List_Edges.Add(new Edges(List_Vertexes[7], List_Vertexes[3])); List_Edges[8].ReSize(2); List_Edges[8].SetDistortion(new Point(30, 26));
+            List_Edges.Add(new Edges(List_Vertexes[6], List_Vertexes[1])); List_Edges[9].ReSize(5);
+            List_Edges.Add(new Edges(List_Vertexes[7], List_Vertexes[5])); List_Edges[10].ReSize(2);
+            List_Edges.Add(new Edges(List_Vertexes[0], List_Vertexes[4])); List_Edges[11].ReSize(1); List_Edges[11].SetDistortion(new Point(0, 120));
+
+            Draw.FullDrawing(Main, List_Vertexes, List_Edges);
+        }
 
         private void Matrix_Adjacencies_Click(object sender, EventArgs e)
         {

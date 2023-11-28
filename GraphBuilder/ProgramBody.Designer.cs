@@ -144,6 +144,7 @@
             // 
             // OutputWindow
             // 
+            this.OutputWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.OutputWindow.FormattingEnabled = true;
             this.OutputWindow.ItemHeight = 21;
             this.OutputWindow.Location = new System.Drawing.Point(1064, 154);
@@ -185,7 +186,7 @@
             this.Load_Button.Name = "Load_Button";
             this.Load_Button.Size = new System.Drawing.Size(60, 60);
             this.Load_Button.TabIndex = 2;
-            this.Load_Button.Paint += new System.Windows.Forms.PaintEventHandler(this.Load_Button_Paint);
+            this.Load_Button.Click += new System.EventHandler(this.Load_Button_Click);
             // 
             // Save_Button
             // 
@@ -197,7 +198,7 @@
             this.Save_Button.Name = "Save_Button";
             this.Save_Button.Size = new System.Drawing.Size(60, 60);
             this.Save_Button.TabIndex = 2;
-            this.Save_Button.Paint += new System.Windows.Forms.PaintEventHandler(this.Save_Button_Paint);
+            this.Save_Button.Click += new System.EventHandler(this.Save_Button_Click);
             // 
             // Tool6
             // 
