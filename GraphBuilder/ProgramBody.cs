@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,14 +95,14 @@ namespace GraphBuilder
 
                 case 5: // Инструмент 5. Удаление выбранных ребер между выбранными вершинами
                     {
-                        
-                            foreach (Vertexes Vertex in List_Vertexes) if ((Vertex.X <= e.X & e.X <= Vertex.X + Vertex.Width) & (Vertex.Y <= e.Y & e.Y <= Vertex.Y + Vertex.Height))
+
+                        foreach (Vertexes Vertex in List_Vertexes) if ((Vertex.X <= e.X & e.X <= Vertex.X + Vertex.Width) & (Vertex.Y <= e.Y & e.Y <= Vertex.Y + Vertex.Height))
                             {
                                 if (TemporaryRemove == null) { TemporaryRemove = Vertex; Draw.Vertex(Main, TemporaryRemove, Color.Red); }
                                 else if (Vertex == TemporaryRemove) { Draw.Vertex(Main, TemporaryRemove, Color.Black); TemporaryRemove = null; DrawTemporary(); }
                                 else if (Vertex != TemporaryRemove) if (MessageBox.Show("Уверены, что хотите удалить выбранное ребро?", "Подтверждение", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
                                         for (int i = 0; i < List_Edges.Count; i++) if ((List_Edges[i].A == TemporaryRemove & List_Edges[i].B == Vertex) | (List_Edges[i].A == Vertex & List_Edges[i].B == TemporaryRemove))
-                                        { List_Edges.Remove(List_Edges[i]); TemporaryRemove = null; Draw.FullDrawing(Main, List_Vertexes, List_Edges); DrawTemporary(); break; }
+                                            { List_Edges.Remove(List_Edges[i]); TemporaryRemove = null; Draw.FullDrawing(Main, List_Vertexes, List_Edges); DrawTemporary(); break; }
 
                             }
                     }
@@ -109,12 +110,12 @@ namespace GraphBuilder
 
                 case 6: // Инструмент 6. Удаление выбранных вершин
                     {
-                        for (int i = 0; i < List_Vertexes.Count; i++)  if ((List_Vertexes[i].X <= e.X & e.X <= List_Vertexes[i].X + List_Vertexes[i].Width) & (List_Vertexes[i].Y <= e.Y & e.Y <= List_Vertexes[i].Y + List_Vertexes[i].Height))
+                        for (int i = 0; i < List_Vertexes.Count; i++) if ((List_Vertexes[i].X <= e.X & e.X <= List_Vertexes[i].X + List_Vertexes[i].Width) & (List_Vertexes[i].Y <= e.Y & e.Y <= List_Vertexes[i].Y + List_Vertexes[i].Height))
                             {
                                 Draw.Vertex(Main, List_Vertexes[i], Color.Red);
                                 if (MessageBox.Show("Уверены, что хотите удалить выбранную вершину?", "Подтверждение", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
                                 {
-                                    for (int j = 0; j < List_Edges.Count; j++)  if (List_Edges[j].A == List_Vertexes[i] | List_Edges[j].B == List_Vertexes[i]) {List_Edges.Remove(List_Edges[j]); j--; }
+                                    for (int j = 0; j < List_Edges.Count; j++) if (List_Edges[j].A == List_Vertexes[i] | List_Edges[j].B == List_Vertexes[i]) { List_Edges.Remove(List_Edges[j]); j--; }
                                     if (TemporaryAdd == List_Vertexes[i]) TemporaryAdd = null; if (TemporaryUpdate == List_Vertexes[i]) TemporaryUpdate = null; if (TemporaryRemove == List_Vertexes[i]) TemporaryRemove = null;
                                     List_Vertexes.Remove(List_Vertexes[i]); Vertexes.RecalculatingNames(List_Vertexes); Draw.FullDrawing(Main, List_Vertexes, List_Edges); DrawTemporary(); break;
                                 }
@@ -138,9 +139,36 @@ namespace GraphBuilder
         /// <summary> Метод. Чтение графа из формата Image </summary> 
         private void Load_Button_Paint(object sender, PaintEventArgs e) { } // Не реализовано
 
-        private void Matrix_Adjacencies_Click(object sender, EventArgs e) { }
+        private void Matrix_Adjacencies_Click(object sender, EventArgs e)
+        {
+            OutputWindow.Items.Clear(); int[,] Matrix_Adjacencies = new int[List_Vertexes.Count, List_Vertexes.Count]; string Out = "| x |";
 
-        private void Matrix_Weights_Click(object sender, EventArgs e) { }
+            for (int I1 = 0; I1 < Matrix_Adjacencies.GetLength(0); I1++) for (int I2 = 0; I2 < Matrix_Adjacencies.GetLength(1); I2++) Matrix_Adjacencies[I1, I2] = 0;
+
+            for (int I1 = 0; I1 < List_Edges.Count; I1++)
+            { Matrix_Adjacencies[Convert.ToInt32(List_Edges[I1].A.Name) - 1, Convert.ToInt32(List_Edges[I1].B.Name) - 1] = 1; Matrix_Adjacencies[Convert.ToInt32(List_Edges[I1].B.Name) - 1, Convert.ToInt32(List_Edges[I1].A.Name) - 1] = 1; }
+
+            for (int I1 = -1; I1 < Matrix_Adjacencies.GetLength(0); I1++)
+            {
+                if (I1 == -1) { for (int I2 = 0; I2 < List_Vertexes.Count; I2++) Out += $" | {I2 + 1} |"; OutputWindow.Items.Add(Out); }
+                else { Out = $"| {I1 + 1} |"; for (int I2 = 0; I2 < Matrix_Adjacencies.GetLength(1); I2++) Out += $" | {Matrix_Adjacencies[I1, I2]} |"; OutputWindow.Items.Add(Out);  }
+            }
+        }
+
+        private void Matrix_Weights_Click(object sender, EventArgs e)
+        {
+            OutputWindow.Items.Clear(); int[,] Matrix_Weights = new int[List_Vertexes.Count, List_Edges.Count]; string Out = "| x |";
+
+            for (int I1 = 0; I1 < Matrix_Weights.GetLength(0); I1++) for (int I2 = 0; I2 < Matrix_Weights.GetLength(1); I2++) Matrix_Weights[I1, I2] = 0;
+
+            for (int I1 = 0; I1 < List_Edges.Count; I1++) { Matrix_Weights[Convert.ToInt32(List_Edges[I1].A.Name) - 1, I1] = 1; Matrix_Weights[Convert.ToInt32(List_Edges[I1].B.Name) - 1, I1] = 1; }
+
+            for (int I1 = -1; I1 < Matrix_Weights.GetLength(0); I1++)
+            {
+                if (I1 == -1) { for (int I2 = 0; I2 < List_Edges.Count; I2++) Out += $" | {I2 + 1} |"; OutputWindow.Items.Add(Out); }
+                else { Out = $"| {I1 + 1} |"; for (int I2 = 0; I2 < Matrix_Weights.GetLength(1); I2++) Out += $" | {Matrix_Weights[I1, I2]} |"; OutputWindow.Items.Add(Out); }
+            }
+        }
 
         private void Path_Click(object sender, EventArgs e) { }
 

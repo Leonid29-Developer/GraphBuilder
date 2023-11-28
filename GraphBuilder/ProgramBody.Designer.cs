@@ -148,26 +148,30 @@
             this.OutputWindow.ItemHeight = 21;
             this.OutputWindow.Location = new System.Drawing.Point(1064, 154);
             this.OutputWindow.Name = "OutputWindow";
-            this.OutputWindow.Size = new System.Drawing.Size(352, 445);
+            this.OutputWindow.Size = new System.Drawing.Size(352, 424);
             this.OutputWindow.TabIndex = 6;
             // 
             // Path
             // 
             this.Path.BackColor = System.Drawing.SystemColors.Control;
-            this.Path.Location = new System.Drawing.Point(1064, 617);
+            this.Path.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Path.BackgroundImage")));
+            this.Path.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Path.Location = new System.Drawing.Point(1064, 603);
             this.Path.Margin = new System.Windows.Forms.Padding(5);
             this.Path.Name = "Path";
-            this.Path.Size = new System.Drawing.Size(164, 60);
+            this.Path.Size = new System.Drawing.Size(164, 74);
             this.Path.TabIndex = 1;
             this.Path.Click += new System.EventHandler(this.Path_Click);
             // 
             // Cycle
             // 
             this.Cycle.BackColor = System.Drawing.SystemColors.Control;
-            this.Cycle.Location = new System.Drawing.Point(1252, 617);
+            this.Cycle.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("Cycle.BackgroundImage")));
+            this.Cycle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Cycle.Location = new System.Drawing.Point(1252, 603);
             this.Cycle.Margin = new System.Windows.Forms.Padding(5);
             this.Cycle.Name = "Cycle";
-            this.Cycle.Size = new System.Drawing.Size(164, 60);
+            this.Cycle.Size = new System.Drawing.Size(164, 74);
             this.Cycle.TabIndex = 2;
             this.Cycle.Click += new System.EventHandler(this.Cycle_Click);
             // 
