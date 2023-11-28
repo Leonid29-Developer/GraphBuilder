@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 
 namespace GraphBuilder
 {
@@ -13,10 +12,7 @@ namespace GraphBuilder
 
         public Vertexes(string NewName, int NewX, int NewY, int NewWidth, int NewHeight) { Name = NewName; X = NewX; Y = NewY; Width = NewWidth; Height = NewHeight; }
 
-        public static void RecalculatingNames(List<Vertexes> List_Vertexes)
-        {
-            for (int i = 0; i < List_Vertexes.Count; i++) List_Vertexes[i].Name = (i + 1).ToString();
-        }
+        public static void RecalculatingNames(List<Vertexes> List_Vertexes) { for (int i = 0; i < List_Vertexes.Count; i++) List_Vertexes[i].Name = (i + 1).ToString(); }
     }
 
     public class Edges

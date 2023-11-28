@@ -1,14 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace GraphBuilder
 {
@@ -19,7 +12,6 @@ namespace GraphBuilder
         private int ToolsNumber = 1; private Vertexes TemporaryAdd, TemporaryUpdate, TemporaryRemove;
         private List<Vertexes> List_Vertexes { get; set; }
         private List<Edges> List_Edges { get; set; }
-
 
         private void ProgramBody_Load(object sender, EventArgs e)
         {
@@ -54,17 +46,6 @@ namespace GraphBuilder
                             if ((Vertex.X - Distance <= e.X + Vertex.Width & e.X + Vertex.Width <= Vertex.X + Vertex.Width + Distance) & (Vertex.Y - Distance <= e.Y + Vertex.Height & e.Y + Vertex.Height <= Vertex.Y + Vertex.Height + Distance)) { T = false; Ti[3] = false; }
                         }
 
-                        //if(T)
-                        //{
-                        //    Bitmap BM_Main = new Bitmap(Main.Image); Graphics Grap_Main = Graphics.FromImage(BM_Main);
-                        //    Grap_Main.DrawRectangle(new Pen(Color.Black, 1), e.X, e.Y, 60, 60);
-                        //    //if (!Ti[0]) Grap_Main.FillRectangle(new SolidBrush(Color.Red), e.X - 1, e.Y - 1, 3, 3);
-                        //    //if (!Ti[1]) Grap_Main.FillRectangle(new SolidBrush(Color.Red), e.X +59, e.Y - 1, 3, 3);
-                        //    //if (!Ti[2]) Grap_Main.FillRectangle(new SolidBrush(Color.Red), e.X - 1, e.Y +59, 3, 3);
-                        //    //if (!Ti[3]) Grap_Main.FillRectangle(new SolidBrush(Color.Red), e.X +59, e.Y +59, 3, 3);
-                        //    Main.Image = BM_Main;
-                        //}
-
                         if (T) List_Vertexes.Add(new Vertexes((List_Vertexes.Count + 1).ToString(), e.X, e.Y, 60, 60)); Draw.Vertex(Main, List_Vertexes[List_Vertexes.Count - 1], Color.Black);
                     }
                     break;
@@ -87,7 +68,7 @@ namespace GraphBuilder
                                 if (TemporaryUpdate == null) { TemporaryUpdate = Vertex; Draw.Vertex(Main, TemporaryUpdate, Color.Gold); }
                                 else if (Vertex == TemporaryUpdate) { Draw.Vertex(Main, TemporaryUpdate, Color.Black); TemporaryUpdate = null; DrawTemporary(); }
                                 else if (Vertex != TemporaryUpdate) foreach (Edges Edge in List_Edges) if ((Edge.A == TemporaryUpdate & Edge.B == Vertex) | (Edge.A == Vertex & Edge.B == TemporaryUpdate))
-                                        { EdgesResize.Size = Edge.Size; new EdgesResize().ShowDialog(); Edge.ReSize(EdgesResize.Size); Draw.Edge(Main, Edge); TemporaryUpdate = null; DrawTemporary(); }
+                                        { EdgesResize.Sized = Edge.Size; new EdgesResize().ShowDialog(); Edge.ReSize(EdgesResize.Sized); Draw.Edge(Main, Edge); TemporaryUpdate = null; DrawTemporary(); }
 
                             }
                     }
@@ -151,7 +132,7 @@ namespace GraphBuilder
             for (int I1 = -1; I1 < Matrix_Adjacencies.GetLength(0); I1++)
             {
                 if (I1 == -1) { for (int I2 = 0; I2 < List_Vertexes.Count; I2++) Out += $" | {I2 + 1} |"; OutputWindow.Items.Add(Out); }
-                else { Out = $"| {I1 + 1} |"; for (int I2 = 0; I2 < Matrix_Adjacencies.GetLength(1); I2++) Out += $" | {Matrix_Adjacencies[I1, I2]} |"; OutputWindow.Items.Add(Out);  }
+                else { Out = $"| {I1 + 1} |"; for (int I2 = 0; I2 < Matrix_Adjacencies.GetLength(1); I2++) Out += $" | {Matrix_Adjacencies[I1, I2]} |"; OutputWindow.Items.Add(Out); }
             }
         }
 
@@ -170,8 +151,60 @@ namespace GraphBuilder
             }
         }
 
-        private void Path_Click(object sender, EventArgs e) { }
+        private void Path_Click(object sender, EventArgs e)
+        {
+            OutputWindow.Items.Clear(); int[] Path = new int[List_Vertexes.Count];
 
-        private void Cycle_Click(object sender, EventArgs e) { }
+            for (int I1 = 0; I1 < Path.Length; I1++) { for (int I2 = I1 + 1; I2 < Path.Length; I2++) { for (int I3 = 0; I3 < Path.Length; I3++) Path[I3] = 1; Path_P(I1, I2, Path, $"{I1 + 1}"); } }
+        }
+
+        private void Path_P(int I1, int I2, int[] Path, string Out)
+        {
+            if (I1 != I2) Path[I1] = 2; else { OutputWindow.Items.Add(Out); return; }
+
+            for (int I4 = 0; I4 < List_Edges.Count; I4++)
+            {
+                if (Path[Convert.ToInt32(List_Edges[I4].B.Name) - 1] == 1 & (Convert.ToInt32(List_Edges[I4].A.Name) - 1) == I1)
+                { Path_P(Convert.ToInt32(List_Edges[I4].B.Name) - 1, I2, Path, $"{Out}-{Convert.ToInt32(List_Edges[I4].B.Name)}"); Path[Convert.ToInt32(List_Edges[I4].B.Name) - 1] = 1; }
+                else if (Path[Convert.ToInt32(List_Edges[I4].A.Name) - 1] == 1 & (Convert.ToInt32(List_Edges[I4].B.Name) - 1) == I1)
+                { Path_P(Convert.ToInt32(List_Edges[I4].A.Name) - 1, I2, Path, $"{Out}-{Convert.ToInt32(List_Edges[I4].A.Name)}"); Path[Convert.ToInt32(List_Edges[I4].A.Name) - 1] = 1; }
+            }
+        }
+
+        private void Cycle_Click(object sender, EventArgs e)
+        {
+            OutputWindow.Items.Clear(); int[] Path = new int[List_Vertexes.Count];
+
+            for (int I1 = 0; I1 < Path.Length; I1++) { for (int I2 = 0; I2 < Path.Length; I2++) Path[I2] = 1; List<int> Cycle = new List<int>(); Cycle.Add(I1 + 1); Cycle_P(I1, I1, Path, -1, Cycle); }
+        }
+
+        private void Cycle_P(int I1, int I2, int[] Path, int UnavailableEdge, List<int> Cycle)
+        {
+            if (I1 != I2) Path[I1] = 2;
+            else if (Cycle.Count >= 2)
+            {
+                Cycle.Reverse(); string Out = Cycle[0].ToString();
+                for (int I3 = 1; I3 < Cycle.Count; I3++) Out += $"-{Cycle[I3]}"; bool Flag = false;
+                for (int I3 = 1; I3 < OutputWindow.Items.Count; I3++) if (OutputWindow.Items[I3].ToString() == Out) { Flag = true; break; }
+                if (!Flag) { Cycle.Reverse(); Out = Cycle[0].ToString(); for (int I3 = 1; I3 < Cycle.Count; I3++) Out += $"-{Cycle[I3]}"; OutputWindow.Items.Add(Out); }
+                return;
+            }
+            for (int I3 = 0; I3 < List_Edges.Count; I3++)
+            {
+                if (I3 == UnavailableEdge) continue;
+                if (Path[Convert.ToInt32(List_Edges[I3].B.Name) - 1] == 1 & Convert.ToInt32(List_Edges[I3].A.Name) - 1 == I1)
+                {
+                    List<int> CycleNew = new List<int>(Cycle);
+                    CycleNew.Add(Convert.ToInt32(List_Edges[I3].B.Name));
+                    Cycle_P(Convert.ToInt32(List_Edges[I3].B.Name) - 1, I2, Path, I3, CycleNew); Path[Convert.ToInt32(List_Edges[I3].B.Name) - 1] = 1;
+                }
+                else if (Path[Convert.ToInt32(List_Edges[I3].A.Name) - 1] == 1 & Convert.ToInt32(List_Edges[I3].B.Name) - 1 == I1)
+                {
+                    List<int> CycleNew = new List<int>(Cycle);
+                    CycleNew.Add(Convert.ToInt32(List_Edges[I3].A.Name));
+                    Cycle_P(Convert.ToInt32(List_Edges[I3].A.Name) - 1, I2, Path, I3, CycleNew); Path[Convert.ToInt32(List_Edges[I3].A.Name) - 1] = 1;
+                }
+            }
+        }
     }
 }
