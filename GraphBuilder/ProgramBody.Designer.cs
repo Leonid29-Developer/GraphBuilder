@@ -37,14 +37,16 @@
             this.Main = new System.Windows.Forms.PictureBox();
             this.Matrix_Adjacencies = new System.Windows.Forms.Label();
             this.Matrix_Weights = new System.Windows.Forms.Label();
-            this.OutputWindow = new System.Windows.Forms.ListBox();
             this.Path = new System.Windows.Forms.Panel();
             this.Cycle = new System.Windows.Forms.Panel();
             this.Load_Button = new System.Windows.Forms.Panel();
             this.Save_Button = new System.Windows.Forms.Panel();
             this.Tool6 = new System.Windows.Forms.Panel();
             this.Tool7 = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.OutputWindow = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Main)).BeginInit();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tool1
@@ -142,16 +144,6 @@
             this.Matrix_Weights.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.Matrix_Weights.Click += new System.EventHandler(this.Matrix_Weights_Click);
             // 
-            // OutputWindow
-            // 
-            this.OutputWindow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.OutputWindow.FormattingEnabled = true;
-            this.OutputWindow.ItemHeight = 21;
-            this.OutputWindow.Location = new System.Drawing.Point(1064, 154);
-            this.OutputWindow.Name = "OutputWindow";
-            this.OutputWindow.Size = new System.Drawing.Size(352, 424);
-            this.OutputWindow.TabIndex = 6;
-            // 
             // Path
             // 
             this.Path.BackColor = System.Drawing.SystemColors.Control;
@@ -224,19 +216,39 @@
             this.Tool7.TabIndex = 3;
             this.Tool7.Click += new System.EventHandler(this.Tool7_Click);
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.AutoScroll = true;
+            this.panel1.BackColor = System.Drawing.SystemColors.Control;
+            this.panel1.Controls.Add(this.OutputWindow);
+            this.panel1.Location = new System.Drawing.Point(1064, 154);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(352, 426);
+            this.panel1.TabIndex = 6;
+            // 
+            // OutputWindow
+            // 
+            this.OutputWindow.AutoSize = true;
+            this.OutputWindow.Location = new System.Drawing.Point(0, 0);
+            this.OutputWindow.Name = "OutputWindow";
+            this.OutputWindow.Size = new System.Drawing.Size(0, 21);
+            this.OutputWindow.TabIndex = 0;
+            // 
             // ProgramBody
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(1430, 693);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.Tool7);
             this.Controls.Add(this.Tool6);
             this.Controls.Add(this.Save_Button);
             this.Controls.Add(this.Load_Button);
             this.Controls.Add(this.Cycle);
             this.Controls.Add(this.Path);
-            this.Controls.Add(this.OutputWindow);
             this.Controls.Add(this.Matrix_Weights);
             this.Controls.Add(this.Matrix_Adjacencies);
             this.Controls.Add(this.Main);
@@ -251,6 +263,8 @@
             this.Text = "Графопостроитель";
             this.Load += new System.EventHandler(this.ProgramBody_Load);
             ((System.ComponentModel.ISupportInitialize)(this.Main)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -265,13 +279,14 @@
         private System.Windows.Forms.PictureBox Main;
         private System.Windows.Forms.Label Matrix_Adjacencies;
         private System.Windows.Forms.Label Matrix_Weights;
-        private System.Windows.Forms.ListBox OutputWindow;
         private System.Windows.Forms.Panel Path;
         private System.Windows.Forms.Panel Cycle;
         private System.Windows.Forms.Panel Load_Button;
         private System.Windows.Forms.Panel Save_Button;
         private System.Windows.Forms.Panel Tool6;
         private System.Windows.Forms.Panel Tool7;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label OutputWindow;
     }
 }
 

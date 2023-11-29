@@ -58,7 +58,7 @@ namespace GraphBuilder
 
             Grap_Main.FillEllipse(new SolidBrush(Main.BackColor), DX + DistanceX + Edge.Distortion.X, DY + DistanceY + Edge.Distortion.Y, 46, 18);
             Grap_Main.DrawString($"{Edge.Size:00000}", new Font("Times New Roman", 12), new SolidBrush(Color.Black), DX + DistanceX + Edge.Distortion.X, DY + DistanceY + Edge.Distortion.Y);
-            Grap_Main.DrawLine(new Pen(Color.Black, 1), new Point(DX+ Edge.Distortion.X, DY+ Edge.Distortion.Y), new Point(DX + DistanceX + Edge.Distortion.X, DY + DistanceY + Edge.Distortion.Y + 9));
+            Grap_Main.DrawLine(new Pen(Color.Black, 1), new Point(DX + Edge.Distortion.X, DY + Edge.Distortion.Y), new Point(DX + DistanceX + Edge.Distortion.X, DY + DistanceY + Edge.Distortion.Y + 9));
             Grap_Main.DrawRectangle(new Pen(Color.Black, 1), DX + DistanceX + Edge.Distortion.X, DY + DistanceY + Edge.Distortion.Y, 46, 18);
 
             Main.Image = BM_Main;
@@ -66,6 +66,9 @@ namespace GraphBuilder
 
         /// <summary> Метод. Полная прорисовка всех вершин и ребер </summary>
         public static void FullDrawing(PictureBox Main, List<Vertexes> List_Vertexes, List<Edges> List_Edges)
-        { Bitmap BM_Main = new Bitmap(Main.Image); Graphics Grap_Main = Graphics.FromImage(BM_Main); Grap_Main.Clear(Color.White); foreach (Vertexes Vertex in List_Vertexes) Draw.Vertex(Main, Vertex, Color.Black); foreach (Edges Edge in List_Edges) Draw.Edge(Main, Edge); }
+        {
+            Bitmap BM_Main = new Bitmap(Main.Width, Main.Height); Graphics Grap_Main = Graphics.FromImage(BM_Main); Grap_Main.Clear(Color.White); Main.Image = BM_Main;
+            foreach (Vertexes Vertex in List_Vertexes) Draw.Vertex(Main, Vertex, Color.Black); foreach (Edges Edge in List_Edges) Draw.Edge(Main, Edge);
+        }
     }
 }
